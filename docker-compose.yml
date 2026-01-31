@@ -5,9 +5,9 @@ services:
     image: bitnami/postgresql:latest
     container_name: artist_album_postgres
     environment:
-      POSTGRES_DB: artist_album_db
-      POSTGRES_USER: artist_album_user
-      POSTGRES_PASSWORD: artist_album_pass
+      POSTGRES_DB: artist_album
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
     volumes:
       - postgres_data:/bitnami/postgresql
     ports:
@@ -18,8 +18,8 @@ services:
     container_name: artist_album_minio
     command: server /data --console-address ":9001"
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: admin
     volumes:
       - minio_data:/data
     ports:
