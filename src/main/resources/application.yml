@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: artist-album-api
+  profiles:
+    active: dev
