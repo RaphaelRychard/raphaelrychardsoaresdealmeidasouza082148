@@ -22,15 +22,18 @@ public class RegionalEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @NotBlank
     @Size(max = 200)
     @Column(nullable = false, length = 200)
-    private String nome;
+    private String name;
 
     @Column(nullable = false)
-    private Boolean ativo = true;
+    private Boolean active = true;
+
+    @Column(name = "external_id", unique = true, nullable = false)
+    private Integer externalId;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
