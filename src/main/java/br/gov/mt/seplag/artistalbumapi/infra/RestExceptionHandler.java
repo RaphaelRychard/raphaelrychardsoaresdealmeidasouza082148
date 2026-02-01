@@ -1,7 +1,9 @@
 package br.gov.mt.seplag.artistalbumapi.infra;
 
+import br.gov.mt.seplag.artistalbumapi.exceptions.AuthenticationUserException;
 import br.gov.mt.seplag.artistalbumapi.exceptions.InvalidReleaseYearException;
 import br.gov.mt.seplag.artistalbumapi.exceptions.RegionalExternalIdAlreadyExistsException;
+import br.gov.mt.seplag.artistalbumapi.exceptions.UserFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.security.core.AuthenticationException;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -25,12 +28,25 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(threatResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(UserFoundException.class)
+    private ResponseEntity<RestErrorMessage> userFoundHandler(UserFoundException exception) {
+        RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.CONFLICT, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(threatResponse);
+    }
+
+    @ExceptionHandler(AuthenticationUserException.class)
+    private ResponseEntity<RestErrorMessage> authenticationUserHandler(AuthenticationUserException exception) {
+        RestErrorMessage threatResponse =
+                new RestErrorMessage(HttpStatus.UNAUTHORIZED, exception.getMessage());
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(threatResponse);
+    }
+
     @ExceptionHandler(RegionalExternalIdAlreadyExistsException.class)
     private ResponseEntity<RestErrorMessage> RegionalAlreadyExistsHandler(RegionalExternalIdAlreadyExistsException exception) {
         RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.CONFLICT, exception.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(threatResponse);
     }
-
 
     @ExceptionHandler(InvalidReleaseYearException.class)
     private ResponseEntity<RestErrorMessage> invalidReleaseYearHandler(InvalidReleaseYearException exception) {
