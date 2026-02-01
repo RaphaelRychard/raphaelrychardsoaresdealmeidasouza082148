@@ -1,23 +1,26 @@
 package br.gov.mt.seplag.artistalbumapi.modules.album.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.Year;
 
 @Getter
 @Setter
 public class CreateAlbumRequestDTO {
 
-    @NotBlank
-    @Size(max = 200)
+    @NotBlank(message = "O título é obrigatório")
+    @Schema(description = "Título do álbum", example = "The Rising Tied")
     private String title;
 
-    @NotNull
-    private Integer releaseYear;
+    @NotNull(message = "O ano é obrigatório")
+    @Schema(description = "Ano de lançamento", example = "2012")
+    private Year releaseYear;
 
-    @NotBlank
-    @Size(max = 200)
+    @NotBlank(message = "A imagem de capa é obrigatória")
+    @Schema(description = "Chave da imagem no storage", example = "albums/cover.jpg")
     private String coverImageKey;
 }

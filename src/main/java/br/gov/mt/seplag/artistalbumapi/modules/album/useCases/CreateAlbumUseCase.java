@@ -1,5 +1,6 @@
 package br.gov.mt.seplag.artistalbumapi.modules.album.useCases;
 
+import br.gov.mt.seplag.artistalbumapi.exceptions.InvalidReleaseYearException;
 import br.gov.mt.seplag.artistalbumapi.modules.album.entity.AlbumEntity;
 import br.gov.mt.seplag.artistalbumapi.modules.album.repository.AlbumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,12 @@ public class CreateAlbumUseCase {
     private AlbumRepository albumRepository;
 
     public AlbumEntity execute(AlbumEntity albumEntity) {
-        return this.albumRepository.save(albumEntity);
+        boolean isValidYear = albumEntity.isReleaseYearValid();
+
+        if (!isValidYear) {
+            throw new InvalidReleaseYearException();
+        }
+
+        return albumRepository.save(albumEntity);
     }
 }

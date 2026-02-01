@@ -3,13 +3,13 @@ package br.gov.mt.seplag.artistalbumapi.modules.album.entity;
 import br.gov.mt.seplag.artistalbumapi.modules.artist.entity.ArtistAlbumEntity;
 import br.gov.mt.seplag.artistalbumapi.modules.artist.entity.ArtistEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,7 +32,7 @@ public class AlbumEntity {
     private String title;
 
     @Column(name = "release_year", nullable = false)
-    private int releaseYear;
+    private Year releaseYear;
 
     @NotBlank
     @Size(max = 200)
@@ -50,4 +50,18 @@ public class AlbumEntity {
 
     @OneToMany(mappedBy = "album")
     private Set<ArtistAlbumEntity> artistAlbums = new HashSet<>();
+
+    public boolean isReleaseYearValid() {
+        if (releaseYear == null) {
+            return false;
+        }
+
+        Year earliestValidYear = Year.of(1900);
+        Year currentYear = Year.now();
+
+        boolean isAfterEarliest = !releaseYear.isBefore(earliestValidYear);
+        boolean isBeforeCurrent = !releaseYear.isAfter(currentYear);
+
+        return isAfterEarliest && isBeforeCurrent;
+    }
 }

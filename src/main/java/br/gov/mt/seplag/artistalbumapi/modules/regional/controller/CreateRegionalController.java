@@ -1,9 +1,7 @@
 package br.gov.mt.seplag.artistalbumapi.modules.regional.controller;
 
 import br.gov.mt.seplag.artistalbumapi.modules.regional.dto.request.CreateRegionalRequestDTO;
-import br.gov.mt.seplag.artistalbumapi.modules.regional.dto.response.CreateRegionalResponseDTO;
 import br.gov.mt.seplag.artistalbumapi.modules.regional.mapper.RegionalMapper;
-import br.gov.mt.seplag.artistalbumapi.modules.regional.presenter.RegionalPresenter;
 import br.gov.mt.seplag.artistalbumapi.modules.regional.useCases.CreateRegionalUseCase;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +20,10 @@ public class CreateRegionalController {
     private RegionalMapper regionalMapper;
 
     @PostMapping
-    public ResponseEntity<CreateRegionalResponseDTO> create(@Valid @RequestBody CreateRegionalRequestDTO requestDTO) {
-        var entity = regionalMapper.toDomain(requestDTO);
-        var saved = createRegionalUseCase.execute(entity);
+    public ResponseEntity<String> create(@Valid @RequestBody CreateRegionalRequestDTO requestDTO) {
+        var regionalEntity = regionalMapper.toDomain(requestDTO);
+        createRegionalUseCase.execute(regionalEntity);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(RegionalPresenter.toResponse(saved));
+        return ResponseEntity.status(HttpStatus.CREATED).body("Regional create successfully");
     }
 }

@@ -1,5 +1,6 @@
 package br.gov.mt.seplag.artistalbumapi.modules.regional.useCases;
 
+import br.gov.mt.seplag.artistalbumapi.exceptions.RegionalExternalIdAlreadyExistsException;
 import br.gov.mt.seplag.artistalbumapi.modules.regional.entity.RegionalEntity;
 import br.gov.mt.seplag.artistalbumapi.modules.regional.repository.RegionalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,13 @@ public class CreateRegionalUseCase {
     @Autowired
     private RegionalRepository regionalRepository;
 
-    public RegionalEntity execute(RegionalEntity regionalEntity) {
-        boolean existExternalId = regionalRepository.existsByExternalId(regionalEntity.getExternalId());
+    public void execute(RegionalEntity regional) {
+        boolean existExternalId = regionalRepository.existsByExternalId(regional.getExternalId());
 
         if (existExternalId) {
-            throw new IllegalArgumentException("Regional with this externalId already exists");
+            throw new RegionalExternalIdAlreadyExistsException(regional.getExternalId().toString());
         }
 
-        return regionalRepository.save(regionalEntity);
+        regionalRepository.save(regional);
     }
 }
