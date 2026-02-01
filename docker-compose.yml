@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_DB: artist_album
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
+      POSTGRES_PASSWORD: admin123456
     volumes:
       - postgres_data:/bitnami/postgresql
     ports:
