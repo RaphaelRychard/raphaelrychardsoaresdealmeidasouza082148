@@ -1,12 +1,7 @@
 package br.gov.mt.seplag.artistalbumapi.modules.regional.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,6 +11,7 @@ import java.time.LocalDateTime;
 @Table(name = "regionals")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegionalEntity {
@@ -24,16 +20,14 @@ public class RegionalEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(max = 200)
+    @Column(name = "external_id", nullable = false, unique = true)
+    private Integer externalId;
+
     @Column(nullable = false, length = 200)
     private String name;
 
     @Column(nullable = false)
     private Boolean active = true;
-
-    @Column(name = "external_id", unique = true, nullable = false)
-    private Integer externalId;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

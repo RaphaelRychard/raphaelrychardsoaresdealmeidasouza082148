@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface RegionalRepository extends JpaRepository<RegionalEntity, Long> {
     Optional<RegionalEntity> findByExternalId(Integer externalId);
     List<RegionalEntity> findByActiveTrue();
+    boolean existsByExternalId(Integer externalId);
 }
