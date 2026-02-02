@@ -3,6 +3,8 @@ package br.gov.mt.seplag.artistalbumapi.modules.regional.controller;
 import br.gov.mt.seplag.artistalbumapi.modules.regional.dto.request.CreateRegionalRequestDTO;
 import br.gov.mt.seplag.artistalbumapi.modules.regional.mapper.RegionalMapper;
 import br.gov.mt.seplag.artistalbumapi.modules.regional.useCases.CreateRegionalUseCase;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/regionals")
+@RequestMapping("/regional")
+@SecurityRequirement(name = "jwt_auth")
+@Tag(name = "Regionals")
 public class CreateRegionalController {
 
     @Autowired

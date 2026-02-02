@@ -5,6 +5,8 @@ import br.gov.mt.seplag.artistalbumapi.modules.artist.dto.response.CreateArtistR
 import br.gov.mt.seplag.artistalbumapi.modules.artist.mapper.ArtistMapper;
 import br.gov.mt.seplag.artistalbumapi.modules.artist.presenter.ArtistPresenter;
 import br.gov.mt.seplag.artistalbumapi.modules.artist.useCases.CreateArtistUseCase;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/artist")
+@SecurityRequirement(name = "jwt_auth")
+@Tag(name = "Artists")
 public class CreateArtistController {
 
     @Autowired
