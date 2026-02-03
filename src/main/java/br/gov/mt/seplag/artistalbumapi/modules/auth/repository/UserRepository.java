@@ -1,10 +1,9 @@
 package br.gov.mt.seplag.artistalbumapi.modules.auth.repository;
 
-import br.gov.mt.seplag.artistalbumapi.modules.auth.entity.UserEntity;
+import br.gov.mt.seplag.artistalbumapi.modules.auth.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Optional;
-
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    Optional<UserEntity> findByUsername(String username);
+public interface UserRepository extends JpaRepository<User, Long> {
+    UserDetails findByLogin(String login);
 }

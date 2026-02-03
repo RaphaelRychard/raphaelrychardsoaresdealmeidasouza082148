@@ -3,6 +3,8 @@ package br.gov.mt.seplag.artistalbumapi.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
-public class SecurityConfig {
+public class SecurityConfigurations {
 
     @Autowired
     private SecurityFilter securityFilter;
@@ -23,8 +25,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                     "/",
-                    "/users",
                     "/auth/login",
+                    "/auth/register",
                     "/public/**",
                     "/swagger-ui/**",
                     "/v3/api-docs/**"
@@ -32,6 +34,11 @@ public class SecurityConfig {
             .addFilterBefore(securityFilter, BasicAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) {
+        return  authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
