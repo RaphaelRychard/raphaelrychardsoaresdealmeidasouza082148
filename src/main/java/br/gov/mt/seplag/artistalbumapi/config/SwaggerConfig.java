@@ -22,7 +22,6 @@ public class SwaggerConfig {
                 )
                 .tags(List.of(
                         new Tag().name("Auth").description("Endpoints de autenticação"),
-                        new Tag().name("Users").description("Endpoints de usuários"),
                         new Tag().name("Artists").description("Endpoints de artistas"),
                         new Tag().name("Albums").description("Endpoints de álbuns"),
                         new Tag().name("Regionals").description("Endpoints regionais")
