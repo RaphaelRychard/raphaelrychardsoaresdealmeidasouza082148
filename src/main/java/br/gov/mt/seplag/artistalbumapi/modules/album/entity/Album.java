@@ -1,7 +1,7 @@
 package br.gov.mt.seplag.artistalbumapi.modules.album.entity;
 
-import br.gov.mt.seplag.artistalbumapi.modules.artist.entity.ArtistAlbumEntity;
-import br.gov.mt.seplag.artistalbumapi.modules.artist.entity.ArtistEntity;
+import br.gov.mt.seplag.artistalbumapi.modules.artist.entity.ArtistAlbum;
+import br.gov.mt.seplag.artistalbumapi.modules.artist.entity.Artist;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -20,7 +20,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AlbumEntity {
+public class Album {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,10 +46,10 @@ public class AlbumEntity {
     private LocalDateTime updatedAt;
 
     @ManyToMany(mappedBy = "albums")
-    private Set<ArtistEntity> artists = new HashSet<>();
+    private Set<Artist> artists = new HashSet<>();
 
     @OneToMany(mappedBy = "album")
-    private Set<ArtistAlbumEntity> artistAlbums = new HashSet<>();
+    private Set<ArtistAlbum> artistAlbums = new HashSet<>();
 
     public boolean isReleaseYearValid() {
         if (releaseYear == null) {

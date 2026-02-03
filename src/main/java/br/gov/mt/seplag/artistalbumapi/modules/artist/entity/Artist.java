@@ -1,6 +1,6 @@
 package br.gov.mt.seplag.artistalbumapi.modules.artist.entity;
 
-import br.gov.mt.seplag.artistalbumapi.modules.album.entity.AlbumEntity;
+import br.gov.mt.seplag.artistalbumapi.modules.album.entity.Album;
 import br.gov.mt.seplag.artistalbumapi.modules.artist.enums.ArtistType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -20,7 +20,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArtistEntity {
+public class Artist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,8 +47,8 @@ public class ArtistEntity {
             joinColumns = @JoinColumn(name = "artist_id", insertable = false, updatable = false),
             inverseJoinColumns = @JoinColumn(name = "album_id", insertable = false, updatable = false)
     )
-    private Set<AlbumEntity> albums = new HashSet<>();
+    private Set<Album> albums = new HashSet<>();
 
     @OneToMany(mappedBy = "artist")
-    private Set<ArtistAlbumEntity> artistAlbums = new HashSet<>();
+    private Set<ArtistAlbum> artistAlbums = new HashSet<>();
 }

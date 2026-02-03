@@ -1,6 +1,6 @@
 package br.gov.mt.seplag.artistalbumapi.modules.artist.entity;
 
-import br.gov.mt.seplag.artistalbumapi.modules.album.entity.AlbumEntity;
+import br.gov.mt.seplag.artistalbumapi.modules.album.entity.Album;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,18 +13,18 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArtistAlbumEntity {
+public class ArtistAlbum {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "artist_id")
-    private ArtistEntity artist;
+    private Artist artist;
 
     @ManyToOne
     @JoinColumn(name = "album_id")
-    private AlbumEntity album;
+    private Album album;
 
     private String contributionType;
 }
