@@ -6,6 +6,7 @@ import br.gov.mt.seplag.artistalbumapi.exceptions.RegionalExternalIdAlreadyExist
 import br.gov.mt.seplag.artistalbumapi.exceptions.UserFoundException;
 import br.gov.mt.seplag.artistalbumapi.modules.album.exception.AlbumNotFoundException;
 import br.gov.mt.seplag.artistalbumapi.modules.album.exception.InvalidAlbumReleaseYearException;
+import br.gov.mt.seplag.artistalbumapi.modules.artist.exception.ArtistNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -66,5 +67,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<RestErrorMessage> invalidAlbumReleaseYearHandler(InvalidAlbumReleaseYearException exception) {
         RestErrorMessage errorResponse = new RestErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(ArtistNotFoundException.class)
+    private ResponseEntity<RestErrorMessage> artistNotFoundHandler(ArtistNotFoundException exception) {
+        RestErrorMessage errorResponse = new RestErrorMessage(HttpStatus.NOT_FOUND, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 }

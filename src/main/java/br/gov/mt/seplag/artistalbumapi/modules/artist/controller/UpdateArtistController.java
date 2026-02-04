@@ -1,10 +1,9 @@
 package br.gov.mt.seplag.artistalbumapi.modules.artist.controller;
 
-import br.gov.mt.seplag.artistalbumapi.modules.artist.dto.request.CreateArtistRequestDTO;
+import br.gov.mt.seplag.artistalbumapi.modules.artist.dto.request.UpdateArtistRequestDTO;
 import br.gov.mt.seplag.artistalbumapi.modules.artist.dto.response.ArtistResponseDTO;
-import br.gov.mt.seplag.artistalbumapi.modules.artist.mapper.ArtistMapper;
 import br.gov.mt.seplag.artistalbumapi.modules.artist.presenter.ArtistPresenter;
-import br.gov.mt.seplag.artistalbumapi.modules.artist.useCases.CreateArtistUseCase;
+import br.gov.mt.seplag.artistalbumapi.modules.artist.useCases.UpdateArtistUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -21,17 +20,16 @@ import org.springframework.web.bind.annotation.*;
 @SecurityRequirement(name = "jwt_auth")
 @Tag(name = "Artists")
 @RequiredArgsConstructor
-public class CreateArtistController {
+public class UpdateArtistController {
 
     @Autowired
-    private CreateArtistUseCase createArtistUseCase;
+    private final UpdateArtistUseCase updateArtistUseCase;
 
-    @Operation(summary = "Criar artista", description = "Cria um novo artista no sistema")
-    @ApiResponses({@ApiResponse(responseCode = "200", description = "Artista criado com sucesso"), @ApiResponse(responseCode = "400", description = "Dados inválidos")})
-    @PostMapping
-    public ResponseEntity<ArtistResponseDTO> create(@Valid @RequestBody CreateArtistRequestDTO dto) {
-        var artist = ArtistMapper.toDomain(dto);
-        var saved = createArtistUseCase.execute(artist);
-        return ResponseEntity.ok(ArtistPresenter.toResponse(saved));
+    @Operation(summary = "Atualizar artista", description = "Atualiza os dados de um artista existente")
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Artista atualizado com sucesso"), @ApiResponse(responseCode = "404", description = "Artista não encontrado"), @ApiResponse(responseCode = "400", description = "Dados inválidos")})
+    @PutMapping("/{id}")
+    public ResponseEntity<ArtistResponseDTO> update(@PathVariable Long id, @Valid @RequestBody UpdateArtistRequestDTO dto) {
+        var artist = updateArtistUseCase.execute(id, dto);
+        return ResponseEntity.ok(ArtistPresenter.toResponse(artist));
     }
 }
