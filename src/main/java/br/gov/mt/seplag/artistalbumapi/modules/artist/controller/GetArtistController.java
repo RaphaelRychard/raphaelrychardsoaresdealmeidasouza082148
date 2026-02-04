@@ -24,7 +24,7 @@ public class GetArtistController {
     private GetArtistByIdUseCase getArtistByIdUseCase;
 
     @Operation(summary = "Buscar artista por ID", description = "Retorna os dados de um artista específico pelo ID")
-    @ApiResponses({@ApiResponse(responseCode = "200", description = "Artista encontrado"), @ApiResponse(responseCode = "404", description = "Artista não encontrado")})
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Artista encontrado")})
     @GetMapping("/{id}")
     public ResponseEntity<ArtistResponseDTO> getById(@PathVariable Long id) {
         var artist = getArtistByIdUseCase.execute(id);

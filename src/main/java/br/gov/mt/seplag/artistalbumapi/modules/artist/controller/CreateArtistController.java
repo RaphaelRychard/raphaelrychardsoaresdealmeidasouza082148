@@ -27,7 +27,7 @@ public class CreateArtistController {
     private CreateArtistUseCase createArtistUseCase;
 
     @Operation(summary = "Criar artista", description = "Cria um novo artista no sistema")
-    @ApiResponses({@ApiResponse(responseCode = "200", description = "Artista criado com sucesso"), @ApiResponse(responseCode = "400", description = "Dados inválidos")})
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Artista criado com sucesso")})
     @PostMapping
     public ResponseEntity<ArtistResponseDTO> create(@Valid @RequestBody CreateArtistRequestDTO dto) {
         var artist = ArtistMapper.toDomain(dto);

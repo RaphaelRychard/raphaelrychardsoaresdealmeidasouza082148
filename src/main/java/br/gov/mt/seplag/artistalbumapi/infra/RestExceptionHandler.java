@@ -1,9 +1,6 @@
 package br.gov.mt.seplag.artistalbumapi.infra;
 
-import br.gov.mt.seplag.artistalbumapi.exceptions.AuthenticationUserException;
-import br.gov.mt.seplag.artistalbumapi.exceptions.InvalidReleaseYearException;
-import br.gov.mt.seplag.artistalbumapi.exceptions.RegionalExternalIdAlreadyExistsException;
-import br.gov.mt.seplag.artistalbumapi.exceptions.UserFoundException;
+import br.gov.mt.seplag.artistalbumapi.exceptions.*;
 import br.gov.mt.seplag.artistalbumapi.modules.album.exception.AlbumNotFoundException;
 import br.gov.mt.seplag.artistalbumapi.modules.album.exception.InvalidAlbumReleaseYearException;
 import br.gov.mt.seplag.artistalbumapi.modules.artist.exception.ArtistNotFoundException;
@@ -21,11 +18,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<RestErrorMessage> handleConstraintViolation(ConstraintViolationException exception) {
-        String message = exception.getConstraintViolations()
-                .stream()
-                .map(ConstraintViolation::getMessage)
-                .findFirst()
-                .orElse("Validation error");
+        String message = exception.getConstraintViolations().stream().map(ConstraintViolation::getMessage).findFirst().orElse("Validation error");
 
         RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.BAD_REQUEST, message);
         return new ResponseEntity<>(threatResponse, HttpStatus.BAD_REQUEST);
@@ -39,9 +32,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AuthenticationUserException.class)
     private ResponseEntity<RestErrorMessage> authenticationUserHandler(AuthenticationUserException exception) {
-        RestErrorMessage threatResponse =
-                new RestErrorMessage(HttpStatus.UNAUTHORIZED, exception.getMessage());
-
+        RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.UNAUTHORIZED, exception.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(threatResponse);
     }
 

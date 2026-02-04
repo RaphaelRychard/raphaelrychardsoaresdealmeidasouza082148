@@ -22,7 +22,7 @@ public class DeleteArtistController {
     private DeleteArtistUseCase deleteArtistUseCase;
 
     @Operation(summary = "Excluir artista", description = "Remove um artista do sistema pelo ID")
-    @ApiResponses({@ApiResponse(responseCode = "204", description = "Artista excluído com sucesso"), @ApiResponse(responseCode = "404", description = "Artista não encontrado")})
+    @ApiResponses({@ApiResponse(responseCode = "204", description = "Artista excluído com sucesso")})
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         deleteArtistUseCase.execute(id);

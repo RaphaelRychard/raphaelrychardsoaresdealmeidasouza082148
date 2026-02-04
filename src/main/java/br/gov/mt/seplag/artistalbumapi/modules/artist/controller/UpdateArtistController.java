@@ -26,7 +26,7 @@ public class UpdateArtistController {
     private final UpdateArtistUseCase updateArtistUseCase;
 
     @Operation(summary = "Atualizar artista", description = "Atualiza os dados de um artista existente")
-    @ApiResponses({@ApiResponse(responseCode = "200", description = "Artista atualizado com sucesso"), @ApiResponse(responseCode = "404", description = "Artista não encontrado"), @ApiResponse(responseCode = "400", description = "Dados inválidos")})
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Artista atualizado com sucesso")})
     @PutMapping("/{id}")
     public ResponseEntity<ArtistResponseDTO> update(@PathVariable Long id, @Valid @RequestBody UpdateArtistRequestDTO dto) {
         var artist = updateArtistUseCase.execute(id, dto);
