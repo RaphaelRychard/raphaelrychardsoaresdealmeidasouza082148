@@ -1,15 +1,16 @@
 package br.gov.mt.seplag.artistalbumapi.modules.album.presenter;
 
-import br.gov.mt.seplag.artistalbumapi.modules.album.dto.response.CreateAlbumResponseDTO;
+import br.gov.mt.seplag.artistalbumapi.modules.album.dto.response.AlbumResponseDTO;
 import br.gov.mt.seplag.artistalbumapi.modules.album.entity.Album;
 
 public class AlbumPresenter {
-    public static CreateAlbumResponseDTO toResponse(Album entity) {
-        return CreateAlbumResponseDTO.builder()
-                .id(entity.getId())
-                .title(entity.getTitle())
-                .releaseYear(entity.getReleaseYear())
-                .coverImageKey(entity.getCoverImageKey())
-                .build();
+    public static AlbumResponseDTO toResponse(Album entity) {
+        return new AlbumResponseDTO(
+                entity.getId(),
+                entity.getTitle(),
+                entity.getReleaseYear().getValue(),
+                entity.getCoverImageKey(),
+                entity.getCreatedAt()
+        );
     }
 }
