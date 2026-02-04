@@ -21,7 +21,7 @@ public class SecurityConfigurations {
     private SecurityFilter securityFilter;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource, RateLimitFilter rateLimitFilter) throws Exception {
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource))
             .csrf(AbstractHttpConfigurer::disable)
@@ -37,7 +37,8 @@ public class SecurityConfigurations {
                     "/swagger-ui/**",
                     "/v3/api-docs/**"
                 ).permitAll().anyRequest().authenticated())
-            .addFilterBefore(securityFilter, BasicAuthenticationFilter.class);
+            .addFilterBefore(securityFilter, BasicAuthenticationFilter.class)
+            .addFilterBefore(rateLimitFilter, BasicAuthenticationFilter.class);
 
         return http.build();
     }
