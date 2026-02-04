@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/artist")
 @SecurityRequirement(name = "jwt_auth")
 @Tag(name = "Artists")
-@RequiredArgsConstructor
 public class DeleteArtistController {
 
     @Autowired

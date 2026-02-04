@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,10 +21,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/artist/search")
 @SecurityRequirement(name = "jwt_auth")
 @Tag(name = "Artists")
-@RequiredArgsConstructor
 public class SearchArtistsByNameController {
 
-    private final SearchArtistsByNameUseCase searchArtistsByNameUseCase;
+    @Autowired
+    private SearchArtistsByNameUseCase searchArtistsByNameUseCase;
 
     @Operation(summary = "Buscar artistas por nome", description = "Retorna artistas filtrados por nome com paginação e ordenação")
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Lista de artistas encontrada")})

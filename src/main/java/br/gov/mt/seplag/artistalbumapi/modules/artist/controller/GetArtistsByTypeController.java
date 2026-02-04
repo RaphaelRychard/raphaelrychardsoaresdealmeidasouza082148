@@ -13,8 +13,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/artist/type")
 @SecurityRequirement(name = "jwt_auth")
 @Tag(name = "Artists")
-@RequiredArgsConstructor
 public class GetArtistsByTypeController {
 
-    private final GetArtistsByTypeUseCase getArtistsByTypeUseCase;
+    @Autowired
+    private GetArtistsByTypeUseCase getArtistsByTypeUseCase;
 
     @Operation(summary = "Listar artistas por tipo", description = "Retorna artistas filtrados por tipo (SOLO/BAND) com paginação e ordenação")
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Lista de artistas por tipo retornada")})

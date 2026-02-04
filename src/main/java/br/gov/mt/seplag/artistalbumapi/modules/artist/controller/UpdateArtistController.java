@@ -19,11 +19,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/artist")
 @SecurityRequirement(name = "jwt_auth")
 @Tag(name = "Artists")
-@RequiredArgsConstructor
 public class UpdateArtistController {
 
     @Autowired
-    private final UpdateArtistUseCase updateArtistUseCase;
+    private UpdateArtistUseCase updateArtistUseCase;
 
     @Operation(summary = "Atualizar artista", description = "Atualiza os dados de um artista existente")
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Artista atualizado com sucesso")})
