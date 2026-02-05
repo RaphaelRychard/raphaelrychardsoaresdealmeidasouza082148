@@ -1,4 +1,4 @@
-package br.gov.mt.seplag.artistalbumapi.modules.artist.controller;
+package br.gov.mt.seplag.artistalbumapi.modules.artist.controller.v1;
 
 import br.gov.mt.seplag.artistalbumapi.modules.artist.dto.request.GetArtistsByTypeRequestDTO;
 import br.gov.mt.seplag.artistalbumapi.modules.artist.dto.response.ArtistResponseDTO;
@@ -19,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/artist/type")
+@RequestMapping("/api/v1/artist/type")
 @SecurityRequirement(name = "jwt_auth")
 @Tag(name = "Artists")
 public class GetArtistsByTypeController {

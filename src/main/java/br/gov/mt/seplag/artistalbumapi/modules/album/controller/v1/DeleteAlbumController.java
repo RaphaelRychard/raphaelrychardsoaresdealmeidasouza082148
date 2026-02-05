@@ -1,4 +1,4 @@
-package br.gov.mt.seplag.artistalbumapi.modules.album.controller;
+package br.gov.mt.seplag.artistalbumapi.modules.album.controller.v1;
 
 import br.gov.mt.seplag.artistalbumapi.modules.album.useCases.DeleteAlbumUseCase;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/album")
+@RequestMapping("/api/v1/album")
 @SecurityRequirement(name = "jwt_auth")
 @Tag(name = "Albums")
 public class DeleteAlbumController {

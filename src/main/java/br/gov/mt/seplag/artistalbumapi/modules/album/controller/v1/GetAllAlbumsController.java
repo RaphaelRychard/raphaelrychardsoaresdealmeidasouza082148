@@ -1,4 +1,4 @@
-package br.gov.mt.seplag.artistalbumapi.modules.album.controller;
+package br.gov.mt.seplag.artistalbumapi.modules.album.controller.v1;
 
 import br.gov.mt.seplag.artistalbumapi.modules.album.dto.response.AlbumResponseDTO;
 import br.gov.mt.seplag.artistalbumapi.modules.album.presenter.AlbumPresenter;
@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/album")
+@RequestMapping("/api/v1/album")
 @SecurityRequirement(name = "jwt_auth")
 @Tag(name = "Albums")
 public class GetAllAlbumsController {
