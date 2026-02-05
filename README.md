@@ -56,16 +56,16 @@ artist-album-api/
 
 ## Funcionalidades Implementadas
 
-* [ ] CRUD de Artistas
-* [ ] CRUD de Álbuns
-* [ ] Associação N:N entre Artistas e Álbuns
-* [ ] Upload de arquivos via MinIO
-* [ ] Autenticação JWT
-* [ ] WebSocket para notificações de novos álbuns
+* [x] CRUD de Artistas
+* [x] CRUD de Álbuns
+* [x] Associação N:N entre Artistas e Álbuns
+* [x] Upload de arquivos via MinIO
+* [x] Autenticação JWT
+* [x] WebSocket para notificações de novos álbuns
 * [ ] Sincronização de Regionais
-* [ ] Rate Limiting (10 requisições/minuto)
+* [x] Rate Limiting (10 requisições/minuto)
 * [ ] Testes unitários e de integração
-* [ ] Documentação Swagger/OpenAPI
+* [x] Documentação Swagger/OpenAPI
 * [ ] Health Checks com Spring Boot Actuator
 
 ---
@@ -93,6 +93,23 @@ docker-compose logs -f app
 * Swagger UI: **[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)**
 
 ---
+
+## WebSocket (notificação de novos álbuns)
+
+A API expõe um endpoint **WebSocket STOMP** para notificar clientes quando um novo álbum é cadastrado.
+
+### Endpoint e tópico
+
+- **Endpoint:** `ws://localhost:8080/ws`
+- **Tópico (subscribe):** `/topic/albums`
+
+Sempre que um álbum é criado via `POST /api/v1/album`, uma mensagem é enviada para `/topic/albums`.
+
+### Configuração de origins
+
+Para permitir conexão do seu front/HTML local, inclua a origem em:
+
+- `app.allowed-origins` (WebSocket/HTTP REST)
 
 ## Testes
 

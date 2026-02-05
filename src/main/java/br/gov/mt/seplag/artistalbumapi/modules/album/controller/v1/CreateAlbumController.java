@@ -4,6 +4,7 @@ import br.gov.mt.seplag.artistalbumapi.modules.album.dto.request.CreateAlbumRequ
 import br.gov.mt.seplag.artistalbumapi.modules.album.dto.response.AlbumResponseDTO;
 import br.gov.mt.seplag.artistalbumapi.modules.album.mapper.AlbumMapper;
 import br.gov.mt.seplag.artistalbumapi.modules.album.presenter.AlbumPresenter;
+import br.gov.mt.seplag.artistalbumapi.modules.album.services.AlbumNotificationService;
 import br.gov.mt.seplag.artistalbumapi.modules.album.useCases.CreateAlbumUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -24,13 +25,19 @@ public class CreateAlbumController {
     @Autowired
     private CreateAlbumUseCase createAlbumUseCase;
 
+    @Autowired
+    private AlbumNotificationService wsNotificationService;
+
     @Operation(summary = "Cria um novo álbum", description = "Cria um álbum associado a um artista existente")
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Álbum criado com sucesso"),})
     @PostMapping
     public ResponseEntity<AlbumResponseDTO> create(@Valid @RequestBody CreateAlbumRequestDTO albumRequestDTO) {
         var albumEntityToDomain = AlbumMapper.toDomain(albumRequestDTO);
-        var result = createAlbumUseCase.execute(albumEntityToDomain);
+        var album = createAlbumUseCase.execute(albumEntityToDomain);
 
-        return ResponseEntity.ok(AlbumPresenter.toResponse(result));
+        var responseDto = AlbumPresenter.toResponse(album);
+        wsNotificationService.notifyNewAlbum(responseDto);
+
+        return ResponseEntity.ok(responseDto);
     }
 }

@@ -25,10 +25,6 @@ public class RateLimitFilter extends OncePerRequestFilter {
     @Value("${rate.limit.window:60000}")
     private long WINDOW;
 
-    private final long CLEANUP_INTERVAL_MS = WINDOW * 2;
-
-    private volatile long lastCleanup = 0L;
-
     private static class UserRate {
         AtomicInteger count = new AtomicInteger(0);
         volatile long windowStart = System.currentTimeMillis();
@@ -77,5 +73,8 @@ public class RateLimitFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return request.getServletPath().startsWith("/ws");
+    }
 }

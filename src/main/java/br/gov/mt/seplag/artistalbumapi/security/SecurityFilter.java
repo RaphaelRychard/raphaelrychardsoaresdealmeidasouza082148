@@ -44,4 +44,10 @@ public class SecurityFilter extends OncePerRequestFilter {
         if (authHeader == null) return null;
         return authHeader.replace("Bearer ", "");
     }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return path.startsWith("/ws");
+    }
 }
