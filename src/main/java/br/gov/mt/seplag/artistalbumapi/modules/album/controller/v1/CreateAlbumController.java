@@ -25,9 +25,7 @@ public class CreateAlbumController {
     private CreateAlbumUseCase createAlbumUseCase;
 
     @Operation(summary = "Cria um novo álbum", description = "Cria um álbum associado a um artista existente")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Álbum criado com sucesso"),
-    })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Álbum criado com sucesso"),})
     @PostMapping
     public ResponseEntity<AlbumResponseDTO> create(@Valid @RequestBody CreateAlbumRequestDTO albumRequestDTO) {
         var albumEntityToDomain = AlbumMapper.toDomain(albumRequestDTO);

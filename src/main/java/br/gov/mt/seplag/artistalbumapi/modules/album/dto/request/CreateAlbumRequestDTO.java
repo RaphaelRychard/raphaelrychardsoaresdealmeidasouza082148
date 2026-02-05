@@ -5,31 +5,26 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
+@Schema(description = "DTO para criar um álbum")
 public record CreateAlbumRequestDTO(
 
         @NotBlank
-        @Schema(
-                description = "Album title",
-                example = "Hybrid Theory"
-        )
+        @Size(max = 200)
+        @Schema(description = "Título do álbum", example = "Hybrid Theory")
         String title,
 
         @NotNull
-        @Min(1000)
-        @Max(3000)
-        @Schema(
-                description = "Album release year",
-                example = "2024",
-                minimum = "1000",
-                maximum = "3000"
-        )
+        @Min(1900)
+        @Max(2100)
+        @Schema(description = "Ano de lançamento", example = "2000")
         Integer releaseYear,
 
-        @NotBlank
-        @Schema(
-                description = "S3 key or storage identifier of the album cover image",
-                example = "albums/hybrid-theory.png"
-        )
-        String coverImageKey
+        @NotNull
+        @Size(min = 1)
+        @Schema(description = "Lista de IDs dos artistas", example = "[7, 8]")
+        List<Long> artistIds
 ) {}

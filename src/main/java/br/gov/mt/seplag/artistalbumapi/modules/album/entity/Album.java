@@ -34,9 +34,8 @@ public class Album {
     @Column(name = "release_year", nullable = false)
     private Year releaseYear;
 
-    @NotBlank
-    @Size(max = 200)
-    @Column(name = "cover_image_key", nullable = false, length = 200)
+    @Size(max = 500)
+    @Column(name = "cover_image_key", nullable = true, length = 500)
     private String coverImageKey;
 
     @CreationTimestamp

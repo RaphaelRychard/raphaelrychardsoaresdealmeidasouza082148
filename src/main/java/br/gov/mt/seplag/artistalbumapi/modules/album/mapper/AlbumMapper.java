@@ -13,7 +13,6 @@ public class AlbumMapper {
         return Album.builder()
                 .title(dto.title())
                 .releaseYear(Year.of(dto.releaseYear()))
-                .coverImageKey(dto.coverImageKey())
                 .build();
     }
 
