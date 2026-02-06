@@ -3,6 +3,7 @@ package br.gov.mt.seplag.artistalbumapi.infra.exception;
 import br.gov.mt.seplag.artistalbumapi.modules.album.exception.AlbumNotFoundException;
 import br.gov.mt.seplag.artistalbumapi.modules.album.exception.InvalidAlbumReleaseYearException;
 import br.gov.mt.seplag.artistalbumapi.modules.artist.exception.ArtistNotFoundException;
+import br.gov.mt.seplag.artistalbumapi.modules.regional.exception.RegionalExternalIdAlreadyExistsException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
