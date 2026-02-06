@@ -38,8 +38,10 @@ artist-album-api/
 │   │   │   ├── regional/    # Sincronização de regionais
 │   │   │   └── auth/        # JWT e autenticação
 │   │   ├── security/        # Filtros JWT e rate limiting
-│   │   ├── exception/       # Tratamento global de exceções
-│   │   ├── infra/           # MinIO e WebSocket
+│   │   ├── infra/
+│   │   │   ├── health/      # Health checks (MinIO, WebSocket)
+│   │   │   └── websocket/   # Infra de WebSocket
+│   │   ├── providers/       # Providers de infraestrutura (ex: JWT, tokens, serviços técnicos)
 │   │   └── ArtistAlbumApiApplication.java
 │   └── resources/
 │       ├── application.yml
@@ -100,8 +102,8 @@ A API expõe um endpoint **WebSocket STOMP** para notificar clientes quando um n
 
 ### Endpoint e tópico
 
-- **Endpoint:** `ws://localhost:8080/ws`
-- **Tópico (subscribe):** `/topic/albums`
+* **Endpoint:** `ws://localhost:8080/ws`
+* **Tópico (subscribe):** `/topic/albums`
 
 Sempre que um álbum é criado via `POST /api/v1/album`, uma mensagem é enviada para `/topic/albums`.
 
@@ -109,13 +111,62 @@ Sempre que um álbum é criado via `POST /api/v1/album`, uma mensagem é enviada
 
 Para permitir conexão do seu front/HTML local, inclua a origem em:
 
-- `app.allowed-origins` (WebSocket/HTTP REST)
+* `app.allowed-origins` (WebSocket e HTTP REST)
+
+---
+
+## Health Checks (Liveness e Readiness)
+
+A aplicação utiliza **Spring Boot Actuator** para expor health checks no padrão de produção (Kubernetes / Cloud).
+
+### Endpoints expostos
+
+* `GET /actuator/health`
+* `GET /actuator/health/liveness`
+* `GET /actuator/health/readiness`
+
+Apenas endpoints de **health** são expostos publicamente. Demais endpoints do Actuator permanecem protegidos.
+
+### O que é verificado
+
+**Liveness** (saúde da aplicação):
+
+* Verifica se a aplicação está viva e respondendo
+* Não depende de serviços externos
+* Usado para evitar restart desnecessário do container
+
+**Readiness** (pronta para receber tráfego):
+
+* Conectividade com **PostgreSQL**
+* Conectividade com **MinIO**
+* Handshake do **WebSocket**
+
+Se qualquer dependência falhar, o readiness retorna **DOWN (503)** e a aplicação sai do tráfego.
+
+### Exemplos de teste
+
+```bash
+# Health geral
+curl -i http://localhost:8080/actuator/health
+
+# Readiness (dependências externas)
+curl -i http://localhost:8080/actuator/health/readiness
+
+# Liveness (processo da aplicação)
+curl -i http://localhost:8080/actuator/health/liveness
+```
+
+**Comportamento esperado:**
+
+* PostgreSQL ou MinIO fora → `readiness = DOWN`, `liveness = UP`
+* Todos os serviços ativos → `readiness = UP`, `liveness = UP`
+
+---
 
 ## Testes
 
 * Testes unitários com JUnit 5 e Mockito
 * Cobertura mínima esperada: 70%
-* Comando:
 
 ```bash
 mvn test
@@ -125,6 +176,6 @@ mvn test
 
 ## Deploy
 
-* Docker multi-stage já empacota a aplicação com todas as dependências
-* Pode ser deployado em qualquer orquestrador (Kubernetes, ECS, etc.)
-* Apontar para PostgreSQL externo e MinIO em produção
+* Docker multi-stage empacota a aplicação com todas as dependências
+* Pode ser deployada em qualquer orquestrador (Kubernetes, ECS, etc.)
+* Em produção, configurar PostgreSQL e MinIO externos
