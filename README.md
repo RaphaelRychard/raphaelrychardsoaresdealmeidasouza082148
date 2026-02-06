@@ -17,7 +17,7 @@ API para gerenciar **Artistas** e **Álbuns** (N:N), com armazenamento de arquiv
 
 ## Tecnologias e Arquitetura
 
-* **Backend:** Java 17 / Spring Boot 4 / REST
+* **Backend:** Java 17 / Spring Boot / REST
 * **Persistência:** PostgreSQL + Flyway / Spring Data JPA / Hibernate
 * **Armazenamento de arquivos:** MinIO
 * **Autenticação:** JWT
