@@ -1,6 +1,7 @@
 package br.gov.mt.seplag.artistalbumapi.infra.exception;
 
 import br.gov.mt.seplag.artistalbumapi.modules.album.exception.AlbumNotFoundException;
+import br.gov.mt.seplag.artistalbumapi.modules.album.exception.AlbumWithoutArtistException;
 import br.gov.mt.seplag.artistalbumapi.modules.album.exception.InvalidAlbumReleaseYearException;
 import br.gov.mt.seplag.artistalbumapi.modules.artist.exception.ArtistNotFoundException;
 import br.gov.mt.seplag.artistalbumapi.modules.regional.exception.RegionalAlreadyActiveForExternalIdException;
@@ -89,6 +90,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     private ResponseEntity<RestErrorMessage> illegalArgumentHandler(IllegalArgumentException exception) {
         RestErrorMessage errorResponse = new RestErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(AlbumWithoutArtistException.class)
+    public ResponseEntity<RestErrorMessage> albumWithoutArtistHandler(AlbumWithoutArtistException exception) {
+        RestErrorMessage errorResponse = new RestErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 }

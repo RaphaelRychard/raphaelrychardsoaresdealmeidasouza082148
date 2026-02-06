@@ -44,11 +44,8 @@ public class Artist {
     @ManyToMany
     @JoinTable(
             name = "artist_album",
-            joinColumns = @JoinColumn(name = "artist_id", insertable = false, updatable = false),
-            inverseJoinColumns = @JoinColumn(name = "album_id", insertable = false, updatable = false)
+            joinColumns = @JoinColumn(name = "artist_id"),
+            inverseJoinColumns = @JoinColumn(name = "album_id")
     )
     private Set<Album> albums = new HashSet<>();
-
-    @OneToMany(mappedBy = "artist")
-    private Set<ArtistAlbum> artistAlbums = new HashSet<>();
 }

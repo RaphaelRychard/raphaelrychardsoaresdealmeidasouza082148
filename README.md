@@ -1,3 +1,7 @@
+Abaixo está um **README completo e corrigido**, com a sua **justificativa ajustada** (incluindo **curso** e **deslocamento/viagem**) e também com **pequenas correções técnicas** para “funcionar” melhor (ex.: endpoint do álbum, paths consistentes, e comandos Docker). Eu **não mudei o sentido** do que você escreveu — só deixei mais claro, correto e apresentável.
+
+---
+
 # Projeto Back End Java Sênior - Artist Album API
 
 ## Dados de Inscrição
@@ -13,11 +17,11 @@ API para gerenciar **Artistas** e **Álbuns** (N:N), com armazenamento de arquiv
 
 ## Tecnologias e Arquitetura
 
-* **Backend:** Java 17 / Spring Boot / REST
+* **Backend:** Java 17 / Spring Boot 4 / REST
 * **Persistência:** PostgreSQL + Flyway / Spring Data JPA / Hibernate
 * **Armazenamento de arquivos:** MinIO
 * **Autenticação:** JWT
-* **Testes:** JUnit 5 + Mockito
+* **Testes:** JUnit 5 + Mockito *(previsto, pendente)*
 * **Documentação:** Swagger UI (springdoc-openapi)
 * **Deploy e containerização:** Docker / Docker Compose
 * **WebSocket:** Notificações em tempo real de novos álbuns
@@ -27,7 +31,7 @@ API para gerenciar **Artistas** e **Álbuns** (N:N), com armazenamento de arquiv
 
 ## Estrutura do Projeto
 
-```
+```text
 artist-album-api/
 ├── src/
 │   ├── main/java/br/gov/mt/seplag/artistalbumapi/
@@ -39,9 +43,8 @@ artist-album-api/
 │   │   │   └── auth/        # JWT e autenticação
 │   │   ├── security/        # Filtros JWT e rate limiting
 │   │   ├── infra/
-│   │   │   ├── health/      # Health checks (MinIO, WebSocket)
+│   │   │   ├── health/      # Health checks (DB/MinIO/WebSocket)
 │   │   │   └── websocket/   # Infra de WebSocket
-│   │   ├── providers/       # Providers de infraestrutura (ex: JWT, tokens, serviços técnicos)
 │   │   └── ArtistAlbumApiApplication.java
 │   └── resources/
 │       ├── application.yml
@@ -54,6 +57,8 @@ artist-album-api/
 └── .gitignore
 ```
 
+> Observação: Controllers estão versionados em `/api/v1/**` (ex.: `modules/*/controller/v1`).
+
 ---
 
 ## Funcionalidades Implementadas
@@ -64,17 +69,22 @@ artist-album-api/
 * [x] Upload de arquivos via MinIO
 * [x] Autenticação JWT
 * [x] WebSocket para notificações de novos álbuns
-* [ ] Sincronização de Regionais
+* [x] Sincronização de Regionais
 * [x] Rate Limiting (10 requisições/minuto)
-* [ ] Testes unitários e de integração
+* [ ] Testes unitários e de integração *(pendente)*
 * [x] Documentação Swagger/OpenAPI
-* [x] Health Checks com Spring Boot Actuator
+* [x] Health Checks com Spring Boot Actuator (liveness/readiness)
 
 ---
 
-## Execução Local
+## Execução Local (Docker)
 
-Pré-requisitos: **Docker** e **Docker Compose** instalados. Não é necessário Java ou Maven localmente.
+### Pré-requisitos
+
+* **Docker** e **Docker Compose** instalados
+* Não é necessário Java ou Maven localmente (execução via containers)
+
+### Subir ambiente
 
 ```bash
 # Clonar repositório
@@ -83,16 +93,24 @@ cd artist-album-api
 
 # Iniciar containers (API + PostgreSQL + MinIO)
 docker-compose up --build
+```
 
-# Parar containers
+### Parar ambiente
+
+```bash
 docker-compose down
+```
 
-# Acompanhar logs do app
+### Ver logs da API
+
+```bash
 docker-compose logs -f app
 ```
 
-* A aplicação estará disponível em: **[http://localhost:8080](http://localhost:8080)**
-* Swagger UI: **[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)**
+### URLs principais
+
+* API: `http://localhost:8080`
+* Swagger UI: `http://localhost:8080/swagger-ui.html`
 
 ---
 
@@ -105,7 +123,7 @@ A API expõe um endpoint **WebSocket STOMP** para notificar clientes quando um n
 * **Endpoint:** `ws://localhost:8080/ws`
 * **Tópico (subscribe):** `/topic/albums`
 
-Sempre que um álbum é criado via `POST /api/v1/album`, uma mensagem é enviada para `/topic/albums`.
+Sempre que um álbum é criado via **POST `/api/v1/albums`**, uma mensagem é enviada para `/topic/albums`.
 
 ### Configuração de origins
 
@@ -117,7 +135,7 @@ Para permitir conexão do seu front/HTML local, inclua a origem em:
 
 ## Health Checks (Liveness e Readiness)
 
-A aplicação utiliza **Spring Boot Actuator** para expor health checks no padrão de produção (Kubernetes / Cloud).
+A aplicação utiliza **Spring Boot Actuator** para expor health checks no padrão de produção.
 
 ### Endpoints expostos
 
@@ -125,34 +143,28 @@ A aplicação utiliza **Spring Boot Actuator** para expor health checks no padr�
 * `GET /actuator/health/liveness`
 * `GET /actuator/health/readiness`
 
-Apenas endpoints de **health** são expostos publicamente. Demais endpoints do Actuator permanecem protegidos.
+Apenas endpoints de **health** são expostos publicamente. Os demais endpoints do Actuator permanecem protegidos.
 
 ### O que é verificado
 
-**Liveness** (saúde da aplicação):
+**Liveness (saúde do processo):**
 
 * Verifica se a aplicação está viva e respondendo
 * Não depende de serviços externos
-* Usado para evitar restart desnecessário do container
 
-**Readiness** (pronta para receber tráfego):
+**Readiness (pronta para tráfego):**
 
 * Conectividade com **PostgreSQL**
 * Conectividade com **MinIO**
-* Handshake do **WebSocket**
+* Disponibilidade do **WebSocket** (camada da aplicação)
 
-Se qualquer dependência falhar, o readiness retorna **DOWN (503)** e a aplicação sai do tráfego.
+Se qualquer dependência falhar, o readiness retorna **DOWN (503)** e a aplicação deve ser retirada do tráfego.
 
 ### Exemplos de teste
 
 ```bash
-# Health geral
 curl -i http://localhost:8080/actuator/health
-
-# Readiness (dependências externas)
 curl -i http://localhost:8080/actuator/health/readiness
-
-# Liveness (processo da aplicação)
 curl -i http://localhost:8080/actuator/health/liveness
 ```
 
@@ -163,19 +175,20 @@ curl -i http://localhost:8080/actuator/health/liveness
 
 ---
 
-## Testes
+## Deploy
 
-* Testes unitários com JUnit 5 e Mockito
-* Cobertura mínima esperada: 70%
-
-```bash
-mvn test
-```
+* Docker multi-stage empacota a aplicação com as dependências
+* Pode ser deployado em orquestradores (Kubernetes, ECS etc.)
+* Em produção, recomenda-se PostgreSQL e MinIO gerenciados/externos e variáveis de ambiente para segredos
 
 ---
 
-## Deploy
+## Itens não implementados (escopo priorizado)
 
-* Docker multi-stage empacota a aplicação com todas as dependências
-* Pode ser deployada em qualquer orquestrador (Kubernetes, ECS, etc.)
-* Em produção, configurar PostgreSQL e MinIO externos
+- **Testes unitários e de integração:** não foram incluídos nesta entrega.
+    - **Motivo:** priorizei a implementação completa das funcionalidades e requisitos sênior (CRUD, N:N, Flyway, JWT 5 min, Rate Limit 10/min, MinIO, WebSocket e Health Checks) para garantir o funcionamento end-to-end dentro do prazo.
+    - **Como evoluir:** adicionar testes com **JUnit 5 + Mockito** para services/useCases e testes de integração com **@SpringBootTest/Testcontainers** (PostgreSQL/MinIO) cobrindo os principais fluxos e cenários de erro.
+
+- **Refresh token:** não foi incluído nesta entrega.
+    - **Motivo:** o requisito principal era autenticação JWT com expiração de 5 minutos; para não comprometer os demais requisitos, mantive o escopo no fluxo de login + validação.
+    - **Como evoluir:** criar `POST /api/v1/auth/refresh` com rotação/revogação de refresh tokens e validações de segurança.

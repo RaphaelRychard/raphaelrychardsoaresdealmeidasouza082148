@@ -1,6 +1,5 @@
 package br.gov.mt.seplag.artistalbumapi.modules.album.entity;
 
-import br.gov.mt.seplag.artistalbumapi.modules.artist.entity.ArtistAlbum;
 import br.gov.mt.seplag.artistalbumapi.modules.artist.entity.Artist;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -46,9 +45,6 @@ public class Album {
 
     @ManyToMany(mappedBy = "albums")
     private Set<Artist> artists = new HashSet<>();
-
-    @OneToMany(mappedBy = "album")
-    private Set<ArtistAlbum> artistAlbums = new HashSet<>();
 
     public boolean isReleaseYearValid() {
         if (releaseYear == null) {
