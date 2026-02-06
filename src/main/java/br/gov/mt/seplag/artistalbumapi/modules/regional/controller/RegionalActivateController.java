@@ -8,7 +8,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/regionals")
@@ -20,8 +23,16 @@ public class RegionalActivateController {
     private ActivateRegionalUseCase activateRegionalUseCase;
 
     @PatchMapping("/{id}/activate")
-    @Operation(summary = "Ativar regional", description = "Ativa manualmente uma regional previamente inativada no sistema")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Regional ativada com sucesso"),})
+    @Operation(
+            summary = "Ativar regional",
+            description = "Ativa manualmente uma regional previamente inativada no sistema"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Regional ativada com sucesso"
+            )
+    })
     public ResponseEntity<Void> activate(@PathVariable Long id) {
         activateRegionalUseCase.execute(id);
         return ResponseEntity.noContent().build();

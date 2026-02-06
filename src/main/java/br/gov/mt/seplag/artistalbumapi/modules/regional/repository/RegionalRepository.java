@@ -8,7 +8,5 @@ import java.util.List;
 public interface RegionalRepository extends JpaRepository<Regional, Long> {
     boolean existsByExternalIdAndActiveTrue(Integer externalId);
 
-    List<Regional> findAllByExternalIdAndActiveTrue(Integer externalId);
-
     List<Regional> findByActiveTrue();
 }

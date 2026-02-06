@@ -1,6 +1,5 @@
 package br.gov.mt.seplag.artistalbumapi.modules.regional.presenter;
 
-import br.gov.mt.seplag.artistalbumapi.modules.regional.dto.response.CreateRegionalResponseDTO;
 import br.gov.mt.seplag.artistalbumapi.modules.regional.dto.response.RegionalResponseDTO;
 import br.gov.mt.seplag.artistalbumapi.modules.regional.entity.Regional;
 
@@ -8,16 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RegionalPresenter {
-
-    public static CreateRegionalResponseDTO toResponse(Regional entity) {
-        return CreateRegionalResponseDTO.builder()
-                .id(entity.getId())
-                .externalId(entity.getExternalId())
-                .name(entity.getName())
-                .active(entity.getActive())
-                .build();
-    }
-
     public static RegionalResponseDTO toDetailedResponse(Regional entity) {
         return RegionalResponseDTO.builder()
                 .id(entity.getId())
