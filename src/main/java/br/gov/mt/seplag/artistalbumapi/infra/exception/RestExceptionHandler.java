@@ -3,7 +3,10 @@ package br.gov.mt.seplag.artistalbumapi.infra.exception;
 import br.gov.mt.seplag.artistalbumapi.modules.album.exception.AlbumNotFoundException;
 import br.gov.mt.seplag.artistalbumapi.modules.album.exception.InvalidAlbumReleaseYearException;
 import br.gov.mt.seplag.artistalbumapi.modules.artist.exception.ArtistNotFoundException;
+import br.gov.mt.seplag.artistalbumapi.modules.regional.exception.RegionalAlreadyActiveForExternalIdException;
 import br.gov.mt.seplag.artistalbumapi.modules.regional.exception.RegionalExternalIdAlreadyExistsException;
+import br.gov.mt.seplag.artistalbumapi.modules.regional.exception.RegionalNotFoundException;
+import br.gov.mt.seplag.artistalbumapi.modules.regional.exception.RegionalSyncException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -19,32 +22,26 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<RestErrorMessage> handleConstraintViolation(ConstraintViolationException exception) {
         String message = exception.getConstraintViolations().stream().map(ConstraintViolation::getMessage).findFirst().orElse("Validation error");
 
-        RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.BAD_REQUEST, message);
-        return new ResponseEntity<>(threatResponse, HttpStatus.BAD_REQUEST);
+        RestErrorMessage errorResponse = new RestErrorMessage(HttpStatus.BAD_REQUEST, message);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(UserFoundException.class)
     private ResponseEntity<RestErrorMessage> userFoundHandler(UserFoundException exception) {
-        RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.CONFLICT, exception.getMessage());
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(threatResponse);
+        RestErrorMessage errorResponse = new RestErrorMessage(HttpStatus.CONFLICT, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    private ResponseEntity<RestErrorMessage> userNotFoundHandler(UserNotFoundException exception) {
+        RestErrorMessage errorResponse = new RestErrorMessage(HttpStatus.NOT_FOUND, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
     @ExceptionHandler(AuthenticationUserException.class)
     private ResponseEntity<RestErrorMessage> authenticationUserHandler(AuthenticationUserException exception) {
-        RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.UNAUTHORIZED, exception.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(threatResponse);
-    }
-
-    @ExceptionHandler(RegionalExternalIdAlreadyExistsException.class)
-    private ResponseEntity<RestErrorMessage> RegionalAlreadyExistsHandler(RegionalExternalIdAlreadyExistsException exception) {
-        RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.CONFLICT, exception.getMessage());
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(threatResponse);
-    }
-
-    @ExceptionHandler(InvalidReleaseYearException.class)
-    private ResponseEntity<RestErrorMessage> invalidReleaseYearHandler(InvalidReleaseYearException exception) {
-        RestErrorMessage errorResponse = new RestErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        RestErrorMessage errorResponse = new RestErrorMessage(HttpStatus.UNAUTHORIZED, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
 
     @ExceptionHandler(AlbumNotFoundException.class)
@@ -65,9 +62,33 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
+    @ExceptionHandler(RegionalNotFoundException.class)
+    private ResponseEntity<RestErrorMessage> handleRegionalNotFound(RegionalNotFoundException exception) {
+        RestErrorMessage errorResponse = new RestErrorMessage(HttpStatus.NOT_FOUND, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    @ExceptionHandler(RegionalSyncException.class)
+    private ResponseEntity<RestErrorMessage> handleRegionalSync(RegionalSyncException exception) {
+        RestErrorMessage errorResponse = new RestErrorMessage(HttpStatus.BAD_GATEWAY, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(errorResponse);
+    }
+
+    @ExceptionHandler(MinioOperationException.class)
+    private ResponseEntity<RestErrorMessage> handleMinioOperation(MinioOperationException exception) {
+        RestErrorMessage errorResponse = new RestErrorMessage(HttpStatus.BAD_GATEWAY, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(errorResponse);
+    }
+
+    @ExceptionHandler({RegionalAlreadyActiveForExternalIdException.class, RegionalExternalIdAlreadyExistsException.class})
+    private ResponseEntity<RestErrorMessage> handleRegionalConflict(RuntimeException exception) {
+        RestErrorMessage errorResponse = new RestErrorMessage(HttpStatus.CONFLICT, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     private ResponseEntity<RestErrorMessage> illegalArgumentHandler(IllegalArgumentException exception) {
-        RestErrorMessage error = new RestErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        RestErrorMessage errorResponse = new RestErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 }

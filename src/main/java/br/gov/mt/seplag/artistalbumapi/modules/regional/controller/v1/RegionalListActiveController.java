@@ -1,9 +1,9 @@
-package br.gov.mt.seplag.artistalbumapi.modules.regional.controller;
+package br.gov.mt.seplag.artistalbumapi.modules.regional.controller.v1;
 
 import br.gov.mt.seplag.artistalbumapi.modules.regional.dto.response.RegionalResponseDTO;
 import br.gov.mt.seplag.artistalbumapi.modules.regional.entity.Regional;
 import br.gov.mt.seplag.artistalbumapi.modules.regional.presenter.RegionalPresenter;
-import br.gov.mt.seplag.artistalbumapi.modules.regional.useCases.ListAllRegionalsUseCase;
+import br.gov.mt.seplag.artistalbumapi.modules.regional.useCases.ListActiveRegionalsUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,25 +22,25 @@ import java.util.List;
 @RequestMapping("/api/v1/regionals")
 @SecurityRequirement(name = "jwt_auth")
 @Tag(name = "Regionals", description = "Endpoints para gerenciamento de regionais")
-public class RegionalListAllController {
+public class RegionalListActiveController {
 
     @Autowired
-    private ListAllRegionalsUseCase listAllRegionalsUseCase;
+    private ListActiveRegionalsUseCase listActiveRegionalsUseCase;
 
-    @GetMapping
+    @GetMapping("/active")
     @Operation(
-            summary = "Listar todas as regionais",
-            description = "Retorna todas as regionais cadastradas no sistema (ativas e inativas)"
+            summary = "Listar regionais ativas",
+            description = "Retorna apenas as regionais que estão ativas no sistema"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Lista de regionais retornada com sucesso",
+                    description = "Lista de regionais ativas retornada com sucesso",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = RegionalResponseDTO.class)))
             )
     })
-    public ResponseEntity<List<RegionalResponseDTO>> listAll() {
-        List<Regional> regionals = listAllRegionalsUseCase.execute();
+    public ResponseEntity<List<RegionalResponseDTO>> listActive() {
+        List<Regional> regionals = listActiveRegionalsUseCase.execute();
         List<RegionalResponseDTO> response = RegionalPresenter.toDetailedResponseList(regionals);
         return ResponseEntity.ok(response);
     }

@@ -1,4 +1,4 @@
-package br.gov.mt.seplag.artistalbumapi.modules.regional.controller;
+package br.gov.mt.seplag.artistalbumapi.modules.regional.controller.v1;
 
 import br.gov.mt.seplag.artistalbumapi.modules.regional.dto.request.CreateRegionalRequestDTO;
 import br.gov.mt.seplag.artistalbumapi.modules.regional.mapper.RegionalMapper;

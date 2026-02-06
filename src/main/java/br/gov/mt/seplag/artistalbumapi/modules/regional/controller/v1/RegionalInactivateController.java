@@ -1,4 +1,4 @@
-package br.gov.mt.seplag.artistalbumapi.modules.regional.controller;
+package br.gov.mt.seplag.artistalbumapi.modules.regional.controller.v1;
 
 import br.gov.mt.seplag.artistalbumapi.modules.regional.useCases.InactivateRegionalUseCase;
 import io.swagger.v3.oas.annotations.Operation;
