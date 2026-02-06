@@ -1,6 +1,6 @@
 package br.gov.mt.seplag.artistalbumapi.providers;
 
-import br.gov.mt.seplag.artistalbumapi.exceptions.AuthenticationUserException;
+import br.gov.mt.seplag.artistalbumapi.infra.exception.AuthenticationUserException;
 import br.gov.mt.seplag.artistalbumapi.modules.auth.dto.response.LoginResponseDTO;
 import br.gov.mt.seplag.artistalbumapi.modules.auth.entity.User;
 import com.auth0.jwt.JWT;

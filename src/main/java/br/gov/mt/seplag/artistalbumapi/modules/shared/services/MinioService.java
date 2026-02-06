@@ -1,6 +1,6 @@
 package br.gov.mt.seplag.artistalbumapi.modules.shared.services;
 
-import br.gov.mt.seplag.artistalbumapi.exceptions.MinioOperationException;
+import br.gov.mt.seplag.artistalbumapi.infra.exception.MinioOperationException;
 import io.minio.*;
 import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;

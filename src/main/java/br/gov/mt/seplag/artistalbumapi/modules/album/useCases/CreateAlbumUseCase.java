@@ -1,6 +1,6 @@
 package br.gov.mt.seplag.artistalbumapi.modules.album.useCases;
 
-import br.gov.mt.seplag.artistalbumapi.exceptions.InvalidReleaseYearException;
+import br.gov.mt.seplag.artistalbumapi.infra.exception.InvalidReleaseYearException;
 import br.gov.mt.seplag.artistalbumapi.modules.album.entity.Album;
 import br.gov.mt.seplag.artistalbumapi.modules.album.repository.AlbumRepository;
 import org.springframework.beans.factory.annotation.Autowired;

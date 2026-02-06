@@ -1,6 +1,6 @@
 package br.gov.mt.seplag.artistalbumapi.modules.auth.useCases;
 
-import br.gov.mt.seplag.artistalbumapi.exceptions.UserFoundException;
+import br.gov.mt.seplag.artistalbumapi.infra.exception.UserFoundException;
 import br.gov.mt.seplag.artistalbumapi.modules.auth.entity.User;
 import br.gov.mt.seplag.artistalbumapi.modules.auth.enums.UserRole;
 import br.gov.mt.seplag.artistalbumapi.modules.auth.repository.UserRepository;

@@ -1,6 +1,6 @@
 package br.gov.mt.seplag.artistalbumapi.modules.regional.useCases;
 
-import br.gov.mt.seplag.artistalbumapi.exceptions.RegionalExternalIdAlreadyExistsException;
+import br.gov.mt.seplag.artistalbumapi.infra.exception.RegionalExternalIdAlreadyExistsException;
 import br.gov.mt.seplag.artistalbumapi.modules.regional.entity.Regional;
 import br.gov.mt.seplag.artistalbumapi.modules.regional.repository.RegionalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
