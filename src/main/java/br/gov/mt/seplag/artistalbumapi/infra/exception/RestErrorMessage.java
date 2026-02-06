@@ -1,4 +1,4 @@
-package br.gov.mt.seplag.artistalbumapi.infra;
+package br.gov.mt.seplag.artistalbumapi.infra.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

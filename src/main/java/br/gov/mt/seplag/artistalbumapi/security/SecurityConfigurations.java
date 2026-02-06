@@ -32,6 +32,7 @@ public class SecurityConfigurations {
                 .requestMatchers(
                     "/",
                     "/ws/**",
+                    "/actuator/health/**",
                     "/auth/login",
                     "/auth/register",
                     "/public/**",

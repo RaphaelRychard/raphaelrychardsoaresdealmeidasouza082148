@@ -1,4 +1,4 @@
-package br.gov.mt.seplag.artistalbumapi.infra;
+package br.gov.mt.seplag.artistalbumapi.infra.exception;
 
 import br.gov.mt.seplag.artistalbumapi.exceptions.*;
 import br.gov.mt.seplag.artistalbumapi.modules.album.exception.AlbumNotFoundException;
@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import org.springframework.security.core.AuthenticationException;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {

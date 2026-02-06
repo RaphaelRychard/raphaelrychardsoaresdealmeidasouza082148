@@ -66,7 +66,7 @@ artist-album-api/
 * [x] Rate Limiting (10 requisições/minuto)
 * [ ] Testes unitários e de integração
 * [x] Documentação Swagger/OpenAPI
-* [ ] Health Checks com Spring Boot Actuator
+* [x] Health Checks com Spring Boot Actuator
 
 ---
 

@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: artist-album-api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/artist_album?connectTimeout=2&socketTimeout=2
+    username: admin
+    password: admin123456
+    hikari:
+      connection-timeout: 2000
+      validation-timeout: 1500
+
+security:
+  token:
+    secret: f3c9e7b2-4a6d-4e8f-9c1a-8d2b5f7a1c34
+
+app:
+  allowed-origins: >
+    http://localhost:3000,
+    http://localhost:3001,
+    http://127.0.0.1:5500
+  health:
+    websocket-url: ws://localhost:${server.port:8080}/ws
+
+rate:
+  limit:
+    requests: 10
+    window: 60000
+
+minio:
+  url: http://localhost:9000
+  access-key: minioadmin
+  secret-key: minioadmin
+  bucket-name: album-covers
+  presigned-url-expiration: 1800
+
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: health
+
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+      group:
+        liveness:
+          include: livenessState,ping
+        readiness:
+          include: readinessState,db,minio,websocket
+
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
